@@ -1,0 +1,10 @@
+{
+  "name": "system-design-first",
+  "version": "0.1.0",
+  "description": "Run a system-design pass (scope, load estimates, as-is vs to-be, pattern trade-offs, design brief) before implementing any feature or task.",
+  "author": { "name": "Baukaalm", "url": "https://github.com/Baukaalm" },
+  "homepage": "https://github.com/Baukaalm/system-design-first",
+  "repository": "https://github.com/Baukaalm/system-design-first",
+  "license": "MIT",
+  "keywords": ["system-design", "architecture", "scalability", "design-review", "planning", "agent-skills"]
+}

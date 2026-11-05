@@ -1,0 +1,11 @@
+---
+description: Run a system-design pass (scope, load estimates, as-is vs to-be, pattern trade-offs, design brief) before implementing any feature, task or refactor. Apply when the user asks to implement, plan, review or estimate a feature, or mentions load, scale, latency, availability, real-time, queues or caching.
+globs:
+alwaysApply: false
+---
+
+Read `.cursor/skills/system-design-first/SKILL.md` (or wherever this
+repository is installed) and follow it before writing code for the task.
+Keep the depth proportional: a one-line fix gets at most a one-sentence check;
+a new feature gets the one-page design brief; a new subsystem gets the brief
+plus deep dives.
