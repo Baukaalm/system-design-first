@@ -1,25 +1,14 @@
 ---
 name: system-design-first
 description: >-
-  Run a system-design pass before (and while) implementing any feature, task,
-  ticket, epic or refactor: pin down functional and non-functional requirements,
-  estimate load and data volume with back-of-the-envelope numbers, map how the
-  system is designed today versus how the author intends it, choose patterns
-  (caching, queues, sharding, rate limiting, consistency, idempotency,
-  real-time delivery, fan-out, ...) with explicit trade-offs, and hand back a
-  short design brief that explains the "why" in plain language. Use it
-  whenever the user asks to implement, plan, scope, estimate, review or explain
-  a feature, a service, an endpoint, a data flow or an integration; asks "how
-  should we design X", "will this scale", "what's the best way to build Y";
-  mentions load, QPS/RPS, latency, availability, throughput, consistency,
-  real-time, queues, caching or growth; or wants an architecture explanation of
-  existing code - even when they never say "system design" or "architecture".
-  For features and subsystems it offers (on request, never by default) to
-  visualize the proposed architecture: a box diagram of as-is vs to-be in the
-  terminal and a design folder with Mermaid diagrams and a browsable
-  architecture.html. Depth is
-  proportional: a one-line fix gets a one-sentence check, a new subsystem gets
-  the full brief.
+  System-design pass before building a feature with its own data flow:
+  requirements, load estimates, as-is vs to-be, pattern trade-offs, and a short
+  design brief with the "why". Use when a task adds a service, an endpoint with
+  storage, an integration, a real-time channel, an event pipeline, a scheduled
+  job or a data-model change; when the user asks how to design or scale
+  something, to explain or diagram an architecture; or when load, latency,
+  consistency, fan-out, queues or caching decide the approach. Copy edits,
+  renames, styling and local bug fixes go straight to the code.
 license: MIT
 metadata:
   version: "0.2.0"
