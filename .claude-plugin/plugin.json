@@ -1,6 +1,6 @@
 {
   "name": "system-design-first",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Run a system-design pass (scope, load estimates, as-is vs to-be, pattern trade-offs, design brief, optional architecture diagrams) before building a feature with its own data flow.",
   "author": { "name": "Baukaalm", "url": "https://github.com/Baukaalm" },
   "homepage": "https://github.com/Baukaalm/system-design-first",
