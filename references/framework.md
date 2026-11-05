@@ -93,7 +93,7 @@ Read before you write. The brief must name real things.
 Checklist:
 
 - Entry point(s): route, controller, handler, job, consumer, UI screen.
-- Data flow in one text diagram; mark sync vs async hops.
+- Data flow in one text line; mark sync vs async hops.
 - Storage: tables/collections, their keys and indexes, approximate row
   counts (ask the DB or look at migrations and seed sizes).
 - State ownership: server DB, cache, client store, URL, local storage.
@@ -119,7 +119,8 @@ describe the as-is from what the user told you.
 
 ### What the section must contain
 
-- Text diagram of components and flow.
+- Components and flow in a one-line text flow; say which are new or
+  changed. Box diagrams only if the user opts in (`visualization.md`).
 - API contract: method + path (or event name) and request/response shapes,
   including error cases and pagination.
 - Data model: tables, keys, indexes, unique constraints, retention.

@@ -53,6 +53,7 @@ Conclusion: throughput is negligible; the problem is the single big export — 2
 
 ## 3. Current design (as-is)
 `ReportPage → GET /api/reports/employees?filters → ReportService.query() → Postgres (indexed view)`.
+(If the user later asks for diagrams, they go to `docs/design/2026-11-05-employees-csv-export/`; see `visualization.md`.)
 Report query is paginated (cursor, 100/page). No job runner for user-facing work; a Celery worker exists for emails (`tasks/email.py`). Object storage adapter exists (`storage/s3.py`) with pre-signed URL support. `reports/export.py` has a stub that builds the whole CSV in memory.
 Inherited limits: HTTP timeout 30 s at the proxy; worker memory 512 MB.
 
@@ -83,6 +84,7 @@ Feature flag `reports.export`; no data migration beyond the new table. SLI: shar
 ## 7. Open questions for the author
 - Should a user be allowed only one running export at a time, or one per filter set?
 - Keep files 7 days, or until downloaded?
+- Draw the architecture? 1 — terminal diagram · 2 — plus design folder · 3 — no
 
 ## 8. Implementation plan
 1. `ReportService.iter_rows(filters)` cursor iterator + CSV writer that streams (unit test on a 1k-row fixture, memory flat).
@@ -93,6 +95,11 @@ Feature flag `reports.export`; no data migration beyond the new table. SLI: shar
 6. UI: Export button → spinner → download link; polling hook with backoff; error state.
 7. Flag, metrics, dashboard, alert.
 ```
+
+The brief ends with the visualization offer (SKILL.md, Step 6). Only if the
+user picks 1 or 2 does the agent draw the terminal diagrams (example in
+`visualization.md`) and, for 2, save the brief as `README.md` in a design
+folder with the same diagrams as Mermaid.
 
 The brief is about a page. Everything in it is tied to a number or to a file
 that exists; each pattern has a reason and a rejected alternative; the

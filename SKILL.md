@@ -14,11 +14,15 @@ description: >-
   mentions load, QPS/RPS, latency, availability, throughput, consistency,
   real-time, queues, caching or growth; or wants an architecture explanation of
   existing code - even when they never say "system design" or "architecture".
-  Depth is proportional: a one-line fix gets a one-sentence check, a new
-  subsystem gets the full brief.
+  For features and subsystems it offers (on request, never by default) to
+  visualize the proposed architecture: a box diagram of as-is vs to-be in the
+  terminal and a design folder with Mermaid diagrams and a browsable
+  architecture.html. Depth is
+  proportional: a one-line fix gets a one-sentence check, a new subsystem gets
+  the full brief.
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   author: Baukaalm
   homepage: https://github.com/Baukaalm/system-design-first
 ---
@@ -160,12 +164,29 @@ Standard questions, in rough order of how often they bite:
 7. **Security & privacy** — authz at the data level (tenant isolation), PII in logs/queues, rate limiting on public endpoints, input validation.
 8. **Observability** — which metric proves it works (SLI), which alert fires when it does not, what to log for debugging a single request.
 
-### Step 6 — Wrap up
+### Step 6 — Wrap up, offer the visualization
+
+Diagrams cost tokens, so they are **opt-in**. The brief itself uses only
+one-line text flows (`client → API → Postgres`).
+
+For L2 and L3, end the brief with one question, together with the open
+questions, in the user's language:
+
+> Draw the architecture? **1** — as-is / to-be diagram in the terminal ·
+> **2** — plus a design folder (Mermaid + `architecture.html`) · **3** — no
+
+- Draw only after the user picks 1 or 2, following
+  `references/visualization.md`. Do not wait for the answer to start
+  implementing; if the user moves on without answering, it is a "no".
+- Skip the question and draw right away only when the user already asked for
+  a diagram, a picture, a visualization or the design folder.
+- If nobody can answer (a non-interactive run, CI, an eval), do not draw and
+  do not ask; mention in one line that diagrams are available on request.
+- Never offer it for L0 or L1.
 
 Produce the brief (next section), then **continue with the task**: implement
-according to the brief, keep the brief in the PR / MR description or the
-project's ADR folder if it keeps one, and list open questions for the author
-rather than deciding them silently.
+according to the brief, keep the brief in the PR / MR description as well,
+and list open questions for the author rather than deciding them silently.
 
 ## 3. Judgment rules
 
@@ -215,11 +236,11 @@ Assumptions: ...
 Conclusion: <what the numbers allow / forbid>
 
 ## 3. Current design (as-is)
-<text diagram> · state ownership · reusable primitives · inherited limits
+<one-line text flow> · state ownership · reusable primitives · inherited limits
 Files: ...
 
 ## 4. Target design (to-be)
-<text diagram> · API contract · data model · canonical-system analogy
+<one-line text flow> · API contract · data model · canonical-system analogy
 Pattern choices: <pattern> — because <reason>; rejected <alternative> because <reason>.
 
 ## 5. Risks and deep dives
@@ -231,6 +252,7 @@ Flags, backfill, rollback · SLI + alert · what to log
 
 ## 7. Open questions for the author
 - ...
+- Draw the architecture? 1 — terminal diagram · 2 — plus design folder · 3 — no
 
 ## 8. Implementation plan
 Ordered steps, each small enough to review.
@@ -245,3 +267,4 @@ Ordered steps, each small enough to review.
 | `references/patterns.md` | Choosing or justifying a pattern; mapping a feature to a canonical system (chat, feed, notifications, search autocomplete, file sync, rate limiter, KV store, ID generator, payments, ...). Has a table of contents. |
 | `references/frontend.md` | The task is a UI / SPA / micro-frontend change: data-fetching cache, pagination, real-time, bundle boundaries, failure isolation, client-side numbers. |
 | `references/brief-template.md` | Writing the brief: full L2 example and the compact L1 inline form. |
+| `references/visualization.md` | Only after the user asked for diagrams (Step 6). Drawing them: terminal box-diagram rules, Mermaid conventions, design-folder layout, how to fill `assets/architecture.html`. |

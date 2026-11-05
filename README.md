@@ -2,6 +2,15 @@
 
 **Make your coding agent think like a senior systems engineer before it writes a line of code.**
 
+<p align="center">
+  <img src="docs/demo.gif" alt="The agent receives a feature request, estimates the load, draws the current and the proposed architecture in the terminal, writes a design folder and opens architecture.html with the diagrams" width="100%">
+</p>
+
+<p align="center">
+  One prompt → load estimates → as-is vs to-be architecture right in the terminal → a design folder with a browsable diagram.<br>
+  See the full output: <a href="examples/leave-notifications/"><code>examples/leave-notifications/</code></a>
+</p>
+
 [![skills.sh](https://skills.sh/b/Baukaalm/system-design-first)](https://skills.sh/Baukaalm/system-design-first)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-blue)](https://agentskills.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -73,6 +82,54 @@ counter (one indexed query is enough at this volume).
 - Who receives ATS stage changes - candidates are external and get no bell.
 ```
 
+### And, if you want, it draws the architecture
+
+Diagrams cost tokens, so they are opt-in. The brief ends with one question:
+
+> Draw the architecture? **1** — terminal diagram · **2** — plus a design
+> folder · **3** — no
+
+Skip the question by asking for a diagram in the prompt. Silence or a
+non-interactive run means no diagrams.
+
+Pick 1 and you see what changes right in the terminal: new
+components marked `+`, changed `~`, removed `-`, sync and async hops drawn
+differently, the load written on the arrows.
+
+```
+┌──────────────┐ POST /export · ~50/day ┌────────────────┐
+│ ReportPage ~ │ ─────────────────────▶ │ ExportView +   │
+└──────────────┘                        └───┬────────┬───┘
+                                 ≤ 20k rows │        │ > 20k rows
+                                            ▼        ▼
+                         ┌──────────────────────┐ ┌──────────────────────┐
+                         │ stream CSV (200)     │ │ report_exports +     │
+                         └──────────────────────┘ └──────────┬───────────┘
+                                                             ╎ enqueue
+                                                             ▽
+                                                ┌──────────────────────┐
+                                                │ export worker +      │
+                                                └──────────────────────┘
++ new  ~ changed  - removed  ──▶ sync  ╌╌▷ async
+```
+
+Pick 2 and the same picture also lands in the repo, so it is reviewed with
+the PR:
+
+```
+docs/design/2026-11-05-employees-csv-export/
+├── README.md          the brief, diagrams embedded as Mermaid (renders on GitHub/GitLab)
+├── as-is.mmd · to-be.mmd
+├── flows/*.mmd        sequence diagrams of the risky flows (L3)
+└── architecture.html  open in a browser: as-is vs to-be side by side, flows
+```
+
+A complete generated folder lives in
+[`examples/leave-notifications/`](examples/leave-notifications/).
+`architecture.html` is a single file with no build step; it works offline
+too (falls back to the diagram source). If the repo already has `docs/adr/`
+or a similar folder, the skill uses that instead.
+
 Then it implements, step by step, according to the brief.
 
 And when you ask it to fix a typo in a button label, you get the typo fixed.
@@ -94,7 +151,7 @@ things like:
 
 ## How it works
 
-Six moves, adapted to real work where a codebase and an author with intent
+Seven moves, adapted to real work where a codebase and an author with intent
 already exist:
 
 1. **Gauge the depth.** L0 trivial, L1 local change, L2 feature, L3
@@ -110,7 +167,10 @@ already exist:
    each pattern with its reason and the rejected alternative, and the
    canonical system it resembles (notification system, feed fan-out, chat,
    rate limiter, export job, booking engine, ...).
-6. **Deep dive, brief, build.** Idempotency, consistency, dependency failure,
+6. **Visualize, on request.** Offers an as-is vs to-be box diagram in the
+   terminal, or a design folder with Mermaid and a browsable
+   `architecture.html`. Nothing is drawn unless you say so.
+7. **Deep dive, brief, build.** Idempotency, consistency, dependency failure,
    hot spots, unbounded growth, migration, security, observability. Then a
    one-page brief with fixed headings, in your language. Then the code.
 
@@ -124,6 +184,8 @@ already exist:
 | `references/patterns.md` | Scaling, caching, queues, storage and consistency, real-time transport, rate limiting, IDs, reliability, observability, plus **25 canonical systems** with their building blocks and classic traps |
 | `references/frontend.md` | The same pass for SPA and micro-frontend work: query caches, pagination, real-time, bundle boundaries, failure isolation |
 | `references/brief-template.md` | The inline L1 check and a complete L2 brief you can hand to a reviewer |
+| `references/visualization.md` | Loaded only when you ask for diagrams: terminal diagram rules, Mermaid conventions, the design-folder layout |
+| `assets/architecture.html` | Single-file viewer template the agent fills: as-is / to-be / flows tabs, light and dark |
 
 The agent loads only what the task needs: a small change never touches the
 catalog.
