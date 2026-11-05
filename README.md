@@ -137,6 +137,18 @@ OpenCode, ...):
 npx skills add Baukaalm/system-design-first
 ```
 
+The installer asks which agents to link the skill into. Pick yours
+explicitly: the shared `~/.agents/skills/` folder alone is **not** read by
+Claude Code, so a skill installed only there never shows up. To skip the
+prompt and install user-level for Claude Code:
+
+```sh
+npx skills add Baukaalm/system-design-first -g -a claude-code
+```
+
+Already installed and the agent doesn't see it? Link the shared copy in:
+`ln -s ~/.agents/skills/system-design-first ~/.claude/skills/`.
+
 **Claude Code plugin** (with updates through the marketplace):
 
 ```sh
